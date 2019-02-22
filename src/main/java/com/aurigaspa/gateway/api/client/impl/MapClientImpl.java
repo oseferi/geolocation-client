@@ -11,6 +11,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import com.aurigaspa.gateway.api.model.CityModel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +22,8 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 public class MapClientImpl {
 	private final static String SAMPLE_URL = "http://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%3Barea%5B%22ISO3166-1%22%3D%22AL%22%5D%5Badmin_level%3D2%5D%3B%28node%5B%22place%22%3D%22town%22%5D%28area%29%3B%29%3Bout%3B";
 
+	private static final Logger logger = LogManager.getLogger(MapClientImpl.class);
+	
 	public static void getCities() {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpResponse response = null;
@@ -38,14 +42,16 @@ public class MapClientImpl {
 			
 			
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		int statusCode = response.getStatusLine().getStatusCode();
-		System.out.println("Status Code: " + statusCode);
-		System.out.println("Response : " + responseString);
-		System.out.println("Locations : "+ locations.toString());
+		 System.out.println(logger.isInfoEnabled());
+		 System.out.println(logger.isDebugEnabled());
+		logger.debug("Status Code: " + statusCode);
+		logger.debug("Response : " + responseString);
+		logger.debug("Locations : "+ locations.toString());
 	}
 
 	public static void main(String args[]) {
