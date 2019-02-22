@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LocationModel {
+public class CityModel {
 	@JsonProperty(value = "type")
 	private String type;
 
@@ -87,7 +87,7 @@ public class LocationModel {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		LocationModel other = (LocationModel) obj;
+		CityModel other = (CityModel) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

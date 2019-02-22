@@ -11,13 +11,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
-import com.aurigaspa.gateway.api.model.LocationModel;
+import com.aurigaspa.gateway.api.model.CityModel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
 
-public class LocationClient {
+public class MapClientImpl {
 	private final static String SAMPLE_URL = "http://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%3Barea%5B%22ISO3166-1%22%3D%22AL%22%5D%5Badmin_level%3D2%5D%3B%28node%5B%22place%22%3D%22town%22%5D%28area%29%3B%29%3Bout%3B";
 
 	public static void getCities() {
@@ -26,7 +26,7 @@ public class LocationClient {
 		HttpEntity entity = null;
 		String responseString = "";
 		ObjectMapper mapper = new ObjectMapper();
-		List<LocationModel> locations = null;
+		List<CityModel> locations = null;
 		try {
 			response = client.execute(new HttpGet(SAMPLE_URL));
 			entity = response.getEntity();
@@ -34,7 +34,7 @@ public class LocationClient {
 			JsonNode responseNode = mapper.readTree(responseString);
 			JsonNode dataNode = responseNode.get("elements");
 			TypeFactory typeFactory = mapper.getTypeFactory();
-			locations = mapper.readValue(mapper.writeValueAsString(dataNode), typeFactory.constructCollectionType(List.class, LocationModel.class));
+			locations = mapper.readValue(mapper.writeValueAsString(dataNode), typeFactory.constructCollectionType(List.class, CityModel.class));
 			
 			
 		} catch (ClientProtocolException e) {
