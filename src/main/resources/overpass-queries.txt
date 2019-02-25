@@ -50,3 +50,15 @@ area(id:3600053292)->.code;
       relation["addr:housenumber"](area.code);
     );
     (._;>;);out;
+    
+[out:json];
+
+[out:json];
+area[name = "Verona"]->.code;
+    (
+      node["addr:street"~"terese", i](area.code);
+      way["addr:street"~"terese", i](area.code);
+      relation["addr:street"~"terese", i](area.code);
+    );
+    (._;);
+out;
