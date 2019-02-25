@@ -15,9 +15,12 @@ import org.apache.http.util.EntityUtils;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+
+import com.aurigaspa.gateway.api.model.AddressModel;
 import com.aurigaspa.gateway.api.model.CityModel;
 import com.aurigaspa.gateway.api.model.CountryModel;
 import com.aurigaspa.gateway.api.utils.OverpassApiConstants;
+import com.aurigaspa.gateway.api.utils.UrlBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -28,15 +31,46 @@ public class MapClientImpl {
 	
 	private static final Logger logger = LogManager.getLogger(MapClientImpl.class);
 	
-	public static void getCities() {
+//	public static void getCities(String country, String query) {
+//		HttpClient client = HttpClientBuilder.create().build();
+//		HttpResponse response = null;
+//		HttpEntity entity = null;
+//		String responseString = "";
+//		ObjectMapper mapper = new ObjectMapper();
+//		List<CityModel> locations = null;
+//		String url = UrlBuilder.buildCityUrl(country, query);
+//		try {
+//			response = client.execute(new HttpGet(OverpassApiConstants.SAMPLE_URL));
+//			entity = response.getEntity();
+//			responseString = EntityUtils.toString(entity, "UTF-8");
+//			JsonNode responseNode = mapper.readTree(responseString);
+//			JsonNode dataNode = responseNode.get("elements");
+//			TypeFactory typeFactory = mapper.getTypeFactory();
+//			locations = mapper.readValue(mapper.writeValueAsString(dataNode), typeFactory.constructCollectionType(List.class, CityModel.class));
+//			
+//			
+//		} catch (ClientProtocolException e) {
+//			logger.error(e.getMessage());
+//		} catch (IOException e) {
+//			logger.error(e.getMessage());
+//		}
+//		int statusCode = response.getStatusLine().getStatusCode();
+//		logger.debug("Status Code: " + statusCode);
+//		logger.debug("Response : " + responseString);
+//		logger.debug("Cities : "+ locations.toString());
+//		
+//	}
+
+	public static void getCities(String country) {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpResponse response = null;
 		HttpEntity entity = null;
 		String responseString = "";
 		ObjectMapper mapper = new ObjectMapper();
 		List<CityModel> locations = null;
+		String url = UrlBuilder.buildCityUrl(country);
 		try {
-			response = client.execute(new HttpGet(OverpassApiConstants.SAMPLE_URL));
+			response = client.execute(new HttpGet(url));
 			entity = response.getEntity();
 			responseString = EntityUtils.toString(entity, "UTF-8");
 			JsonNode responseNode = mapper.readTree(responseString);
@@ -46,25 +80,31 @@ public class MapClientImpl {
 			
 			
 		} catch (ClientProtocolException e) {
+			e.printStackTrace();
 			logger.error(e.getMessage());
 		} catch (IOException e) {
+			e.printStackTrace();
 			logger.error(e.getMessage());
 		}
 		int statusCode = response.getStatusLine().getStatusCode();
 		logger.debug("Status Code: " + statusCode);
 		logger.debug("Response : " + responseString);
-		logger.debug("Locations : "+ locations.toString());
+//		logger.debug("Cities : "+ locations.toString());
+		System.out.println("Status Code: " + statusCode);
+		System.out.println("Response : " + responseString);
+		System.out.println("Cities : "+ locations.toString());
+		System.out.println("Number of rows: "+locations.size());
 		
 	}
-
-	public static void getCountries(String Query) {
+	
+	public static void getCountries(String query) {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpResponse response = null;
 		HttpEntity entity = null;
 		String responseString = "";
 		ObjectMapper mapper = new ObjectMapper();
 		List<CountryModel> locations = null;
-		String url = buildCountryUrl(Query);
+		String url = UrlBuilder.buildCountryUrl(query);
 		
 		try {
 			response = client.execute(new HttpGet(url));
@@ -84,47 +124,57 @@ public class MapClientImpl {
 			e.printStackTrace();
 		}
 		int statusCode = response.getStatusLine().getStatusCode();
+		
 		logger.debug("Status Code: " + statusCode);
 		logger.debug("Response : " + responseString);
-		logger.debug("Locations : "+ locations.toString());
-		System.out.println("Status Code: " + statusCode);
-		System.out.println("Response : " + responseString);
-		System.out.println("Row Count : " + locations.size());
-		System.out.println("Countries : "+ locations.toString());
+		logger.debug("Countriess : "+ locations.toString());
+		System.out.println("Countriess : "+ locations.toString());
+		System.out.println("Number of rows : "+ locations.size());
+		
 	}
 	
-	private static String buildCountryUrl(String query) {
-		StringBuilder urldata = new StringBuilder();
-		String encodedUrlData = "";
-		urldata.append(OverpassApiConstants.OUTPUT_FORMAT);
-		urldata.append(OverpassApiConstants.OBJECT_TYPE_RELATION);
-		urldata.append(OverpassApiConstants.TAG_TYPE_BOUNDARY);
-		urldata.append(OverpassApiConstants.TAG_ADMINISTRATIVE_BOUNDARY);
-		urldata.append(OverpassApiConstants.TAG_ADMIN_LEVEL_2);
+	public static void getAddresses(String city,String query) {
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpResponse response = null;
+		HttpEntity entity = null;
+		String responseString = "";
+		ObjectMapper mapper = new ObjectMapper();
+		List<AddressModel> locations = null;
+		String url = UrlBuilder.buildAddressUrl(city,query);
 		
-		if(query != null && !query.isEmpty()) {
-			urldata.append("[\"name:en\" ~ \"^"+query+"\", i];");	
-		}else {
-			urldata.append("[\"name:en\" ~ \"^\", i];");	
-		}
-		urldata.append(OverpassApiConstants.CONVERT_OUTPUT_FOR_COUNTRY);
-		urldata.append(OverpassApiConstants.OUTPUT_STATEMENT);
-		
-		System.out.println(urldata.toString());
-		 try {
-			 encodedUrlData = URLEncoder.encode(urldata.toString(), "UTF-8");
-			 System.out.println(encodedUrlData);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
+		try {
+			response = client.execute(new HttpGet(url));
+			entity = response.getEntity();
+			responseString = EntityUtils.toString(entity, "UTF-8");
+			JsonNode responseNode = mapper.readTree(responseString);
+			JsonNode dataNode = responseNode.get("elements");
+			TypeFactory typeFactory = mapper.getTypeFactory();
+			locations = mapper.readValue(mapper.writeValueAsString(dataNode), typeFactory.constructCollectionType(List.class, AddressModel.class));
+			
+			
+		} catch (ClientProtocolException e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			logger.error(e.getMessage());
 			e.printStackTrace();
 		}
+		int statusCode = response.getStatusLine().getStatusCode();
 		
-		 //return the full path with the data encoded
-		return OverpassApiConstants.BASE_URL + encodedUrlData;
+		logger.debug("Status Code: " + statusCode);
+		logger.debug("Response : " + responseString);
+		logger.debug("Countriess : "+ locations.toString());
+		System.out.println("Status Code: " + statusCode);
+		System.out.println("Response : " + responseString);
+		System.out.println("Countriess : "+ locations.toString());
+		System.out.println("Number of Rows : "+ locations.size());
+		
 	}
 	
+	
 	public static void main(String args[]) {
-//		getCities();
-		getCountries("a");
+//		getCities("Italy");
+//		getAddresses("Tiranë","papa");
+		getCountries(null);
 	}
 }
