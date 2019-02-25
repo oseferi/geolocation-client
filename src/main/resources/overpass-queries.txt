@@ -1,0 +1,52 @@
+------- Overpass api ----------
+
+1 - retrieve all countries
+
+[out:json];
+(
+relation["type"="boundary"]["boundary"="administrative"]["admin_level"="2"]["name:en" ~ "^", i];
+);
+
+convert country     // convert nodes from inputset to <elem> 
+    ::id = id(),
+    name = t["name:en"];
+out;
+
+http://overpass-api.de/api/interpreter?data=[out:json];(relation["type"="boundary"]["boundary"="administrative"]["admin_level"="2"]["name:en" ~ "^"];);convert country ::id = id(),name = t["name:en"];out;
+
+2 - retrieve countries starting with A
+
+[out:json];
+(
+relation["type"="boundary"]["boundary"="administrative"]["admin_level"="2"]["name:en" ~ "^A", i];
+);
+
+convert country     // convert nodes from inputset to <elem> 
+    ::id = id(),
+    name = t["name:en"];
+out;
+
+[out:json];
+area
+  ["type"="boundary"]["boundary"="administrative"]["admin_level"="2"]["name:en" ~ "^A", i];
+convert country     // convert nodes from inputset to <elem> 
+    ::id = id(),
+    name = t["name:en"];
+out;
+
+3 - retrieve all cities within a country
+
+[out:json];area(id:3600053292)["admin_level"="2"];(node["place"="town"](area););out;
+
+[out:json];area(id:3600053292)["admin_level"="2"];(rel["boundary"="administrative"]["admin_level"="8"]["COMMUN_NAM"~"^", i](area););out tags;
+
+4- retrieve addresses
+
+[out:json];
+area(id:3600053292)->.code;
+    (
+      node["addr:housenumber"](area.code);
+      way["addr:housenumber"](area.code);
+      relation["addr:housenumber"](area.code);
+    );
+    (._;>;);out;
