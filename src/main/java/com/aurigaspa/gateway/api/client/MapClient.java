@@ -20,7 +20,7 @@ public interface MapClient {
 	/**
 	 * @return
 	 */
-	public List<CityModel> getCities(String country);
+	public List<CityModel> getCities(String country, String query);
 
 	/**
 	 * @return
