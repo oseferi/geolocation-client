@@ -7,9 +7,9 @@ public class UrlBuilder {
 
 	private static final String GET_COUNTRIES = "[out:json];area[\"type\"=\"boundary\"][\"boundary\"=\"administrative\"][\"admin_level\"=\"2\"][\"name:en\" ~ \"^${countryName}\", i];convert country ::id = id(),name = t[\"name:en\"];out tags;";
 
-	private static final String GET_CITIES_BY_COUNTRY = "[out:json];area[\"name:en\"=\"${countryName}\"][\"admin_level\"=\"2\"];node[\"place\"~\"^town|city$\"][\"name\" ~ \"^${cityName}\", i](area);out tags;";
+	private static final String GET_CITIES_BY_COUNTRY = "[out:json];area[\"name:en\"=\"${countryName}\"][\"admin_level\"=\"2\"];node[\"place\"~\"^town|city$\"][\"name\" ~ \"^${cityName}\", i](area);out center tags;";
 
-	private static final String GET_ADDRESSES_BY_CITY = "[out:json];area[name=\"${cityName}\"];way[\"addr:street\"~\"^${address}\",i](area);out center tags;";
+	private static final String GET_ADDRESSES_BY_CITY = "[out:json];area[name=\"${cityName}\"];way[\"addr:street\"~\"^${address}\",i](area);out center tags 10;";
 
 	public static String buildCountryUrl(String country) {
 		country = country != null ? country : "";

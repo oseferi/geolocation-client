@@ -26,18 +26,18 @@ public class MapClientImpl implements MapClient {
 	private static final Logger logger = LogManager.getLogger(MapClientImpl.class);
 
 	@Override
-	public List<CountryModel> getCountries(String query) {
+	public List<CountryModel> getCountries(String country) {
 
-		String url = UrlBuilder.buildCountryUrl(query);
+		String url = UrlBuilder.buildCountryUrl(country);
 		String responseString = buildRequest(url);
 		List<CountryModel> locations = extractData(CountryModel.class, responseString);
 		return locations;
 	}
 
 	@Override
-	public List<CityModel> getCities(String country) {
+	public List<CityModel> getCities(String country,String city) {
 
-		String url = UrlBuilder.buildCityUrl(country);
+		String url = UrlBuilder.buildCityUrl(country, city);
 		String responseString = buildRequest(url);
 		List<CityModel> locations = extractData(CityModel.class, responseString);
 		return locations;
@@ -45,8 +45,8 @@ public class MapClientImpl implements MapClient {
 	}
 
 	@Override
-	public List<AddressModel> getAddresses(String city, String query) {
-		String url = UrlBuilder.buildAddressUrl(city, query);
+	public List<AddressModel> getAddresses(String city, String address) {
+		String url = UrlBuilder.buildAddressUrl(city, address);
 		String responseString = buildRequest(url);
 		List<AddressModel> locations = extractData(AddressModel.class, responseString);
 
@@ -67,8 +67,6 @@ public class MapClientImpl implements MapClient {
 
 			logger.debug("Status Code: " + statusCode);
 			logger.debug("Response : " + responseString);
-//			System.out.println("Status Code: " + statusCode);
-//			System.out.println("Response : " + responseString);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -92,10 +90,4 @@ public class MapClientImpl implements MapClient {
 		return null;
 	}
 
-//	public static void main(String args[]) {
-//		getCities("Italy");
-//
-////		getAddresses("Tiranë","papa");
-////		getCountries(null);
-//	}
 }

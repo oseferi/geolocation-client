@@ -15,15 +15,16 @@ public interface MapClient {
 	/**
 	 * @return
 	 */
-	public List<CountryModel> getCountries(String query);
+	public List<CountryModel> getCountries(String country);
 
 	/**
 	 * @return
 	 */
-	public List<CityModel> getCities(String country, String query);
+	public List<CityModel> getCities(String country, String city);
 
 	/**
 	 * @return
 	 */
-	public List<AddressModel> getAddresses(String city, String query);
+	public List<AddressModel> getAddresses(String city, String address);
+
 }
