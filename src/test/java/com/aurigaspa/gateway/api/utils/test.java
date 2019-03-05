@@ -17,7 +17,7 @@ public class test {
 //		List<CityModel> cities = mp.getCities("Albania", null);
 //		System.out.println("Cities : " + cities.toString());
 //		
-		List<AddressModel> addresses = mp.getAddresses("Dehli", null);
+		List<AddressModel> addresses = mp.getAddresses("Bari", null);
 		System.out.println("Addresses : " + addresses.toString());
 	}
 
