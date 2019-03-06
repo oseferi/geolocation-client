@@ -24,12 +24,13 @@ public class NominatimClientTest {
 	
 	
 	public static void main(String[] args) {
-		String url = buildAddressUrl("b","Tirana","Albania");
+		String url = buildAddressUrl("Via+del+Quirinale","Roma","Italy");
 		System.out.println("URL : "+ url);
 		String responseString = buildRequest(url);
 		System.out.println(responseString);
 		List<AddressNominatimModel> locations = extractData(AddressNominatimModel.class, responseString);
-		System.out.println("Address: "+ locations.toString());
+		locations.stream().forEach(System.out::println);
+		//System.out.println("Address: "+ locations.toString());
 	}
 	
 	private static String buildRequest(String url) {

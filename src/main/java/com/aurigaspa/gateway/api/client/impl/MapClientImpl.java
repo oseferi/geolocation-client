@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 import com.aurigaspa.gateway.api.client.MapClient;
 import com.aurigaspa.gateway.api.model.AddressModel;
 import com.aurigaspa.gateway.api.model.CityModel;
-import com.aurigaspa.gateway.api.model.CountryModel;
+import com.aurigaspa.gateway.api.model.CountryModel1;
 import com.aurigaspa.gateway.api.utils.UrlBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,11 +26,11 @@ public class MapClientImpl implements MapClient {
 	private static final Logger logger = LogManager.getLogger(MapClientImpl.class);
 
 	@Override
-	public List<CountryModel> getCountries(String country) {
+	public List<CountryModel1> getCountries(String country) {
 
 		String url = UrlBuilder.buildCountryUrl(country);
 		String responseString = buildRequest(url);
-		List<CountryModel> locations = extractData(CountryModel.class, responseString);
+		List<CountryModel1> locations = extractData(CountryModel1.class, responseString);
 		return locations;
 	}
 

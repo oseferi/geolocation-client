@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.aurigaspa.gateway.api.model.AddressModel;
 import com.aurigaspa.gateway.api.model.CityModel;
-import com.aurigaspa.gateway.api.model.CountryModel;
+import com.aurigaspa.gateway.api.model.CountryModel1;
 
 /**
  * @author oseferi
@@ -15,7 +15,7 @@ public interface MapClient {
 	/**
 	 * @return
 	 */
-	public List<CountryModel> getCountries(String country);
+	public List<CountryModel1> getCountries(String country);
 
 	/**
 	 * @return
