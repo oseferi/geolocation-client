@@ -43,7 +43,7 @@ public class UrlBuilder {
 		return OverpassApiConstants.BASE_URL + encodedUrlData;
 	}
 
-	private static String encodeUrl(String urlData) {
+	public static String encodeUrl(String urlData) {
 		String encodedUrlData = null;
 		try {
 			encodedUrlData = URLEncoder.encode(urlData, "UTF-8");
